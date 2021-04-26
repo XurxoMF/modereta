@@ -537,7 +537,7 @@ client.on('message', message => {
     const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
 
     if (now < expirationTime) {
-      message.delete({ timeout: 10000 });
+      message.delete();
       const timeLeft = (expirationTime - now) / 1000;
       return message.reply(`Por favor, espera **\`${timeLeft.toFixed(1)}\`** segundos más antes de usar el comando \`${command.name}\` de nuevo.`).then(msg => {
         msg.delete({ timeout: 10000 });
