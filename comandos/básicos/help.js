@@ -13,13 +13,13 @@ module.exports = {
     if (!args[0]) {
       let categories = [];
 
-      readdirSync("./commands/").forEach((dir) => {
-        const commands = readdirSync(`./commands/${dir}/`).filter((file) =>
+      readdirSync("./comandos/").forEach((dir) => {
+        const commands = readdirSync(`./comandos/${dir}/`).filter((file) =>
           file.endsWith(".js")
         );
 
         const cmds = commands.map((command) => {
-          let file = require(`../../commands/${dir}/${command}`);
+          let file = require(`../../comandos/${dir}/${command}`);
 
           if (!file.name) return "No hay ningún comando con ese nombre.";
 
@@ -46,6 +46,7 @@ module.exports = {
         )
         .setTimestamp()
         .setColor('#fc03f4');
+      message.delete();
       return message.channel.send(embed);
     } else {
       const command =
@@ -58,6 +59,7 @@ module.exports = {
         const embed = new MessageEmbed()
           .setTitle(`No existe ese comando! Puedes usar \`${prefix}help\` para ver los comandos disponibles.`)
           .setColor("FF0000");
+        message.delete();
         return message.channel.send(embed).then(msg => {
           msg.delete({ timeout: 10000 });
         });
@@ -67,7 +69,7 @@ module.exports = {
         .setTitle("Información del comando:")
         .addField(
           "COMANDO:",
-          command.name ? `\`${prefix}\`\`${command.name}\`` : "Comando sin nombre."
+          command.name ? `\`${prefix}${command.name}\`` : "Comando sin nombre."
         )
         .addField(
           "ALIAS:",
@@ -87,7 +89,9 @@ module.exports = {
             ? command.description
             : "Este comando no tiene descripción."
         )
+        .setFooter('*Los parámetros entre [] son opcionales.*')
         .setColor('#fc03f4');
+      message.delete();
       return message.channel.send(embed).then(msg => {
         msg.delete({ timeout: 10000 });
       });
