@@ -32,7 +32,7 @@ module.exports = {
 
         data = {
           name: dir.toUpperCase(),
-          value: cmds.length === 0 ? "Procesando..." : cmds.join(" "),
+          value: cmds.length === 0 ? "Procesando..." : cmds.join(", "),
         };
 
         categories.push(data);
