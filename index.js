@@ -481,7 +481,7 @@ client.on('message', message => {
 
 
 
-
+  if (!message.content.startsWith(prefix)) return;
 
   if (nocomando.some(nocom => message.channel.id === nocom)) {
     message.delete()
