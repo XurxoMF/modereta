@@ -74,7 +74,7 @@ module.exports = {
         .addField(
           "ALIAS:",
           command.aliases
-            ? `\`${command.aliases.join("` `")}\``
+            ? `\`${command.aliases.join("`, `")}\``
             : "Este comando no tiene alias."
         )
         .addField(
