@@ -92,8 +92,7 @@ module.exports = {
         .setFooter('*Los parámetros entre [] son opcionales.*')
         .setColor('#fc03f4');
       message.delete();
-      return message.channel.send(embed)
-      });
+      return message.channel.send(embed);
     }
   },
 };
