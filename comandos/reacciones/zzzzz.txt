@@ -1,0 +1,18 @@
+const { MessageEmbed } = require("discord.js");
+
+module.exports = {
+    name: '',
+    description: 'Envía un gif ',
+    aliases: ['', ''],
+    execute(client, message) {
+      message.delete();
+      let gifs = ['', '', '', '', '', '', '', '']
+      let usersend = message.member.user
+      const embed = new MessageEmbed()
+      .setColor('#fc03f4')
+      .setDescription(`${usersend} ****`)
+      .setImage(gifs[Math.floor(Math.random() * gifs.length)]);
+
+      message.channel.send(embed);
+    },
+  };
