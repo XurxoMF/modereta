@@ -92,8 +92,7 @@ module.exports = {
         .setFooter('*Los parámetros entre [] son opcionales.*')
         .setColor('#fc03f4');
       message.delete();
-      return message.channel.send(embed).then(msg => {
-        msg.delete({ timeout: 10000 });
+      return message.channel.send(embed)
       });
     }
   },
