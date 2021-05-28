@@ -13,30 +13,31 @@ module.exports = {
     if (!args[0]) {
       let categories = [];
 
-      readdirSync("./comandos/").forEach((dir) => {
-        const commands = readdirSync(`./comandos/${dir}/`).filter((file) =>
-          file.endsWith(".js")
-        );
+      readdirSync("./comandos/").filter(c =>
+        !['privados'].includes(c)).forEach((dir) => {
+          const commands = readdirSync(`./comandos/${dir}/`).filter((file) =>
+            file.endsWith(".js")
+          );
 
-        const cmds = commands.map((command) => {
-          let file = require(`../../comandos/${dir}/${command}`);
+          const cmds = commands.map((command) => {
+            let file = require(`../../comandos/${dir}/${command}`);
 
-          if (!file.name) return "No hay ningún comando con ese nombre.";
+            if (!file.name) return "No hay ningún comando con ese nombre.";
 
-          let name = file.name.replace(".js", "");
+            let name = file.name.replace(".js", "");
 
-          return `\`${name}\``;
+            return `\`${name}\``;
+          });
+
+          let data = new Object();
+
+          data = {
+            name: dir.toUpperCase(),
+            value: cmds.length === 0 ? "Procesando..." : cmds.join(", "),
+          };
+
+          categories.push(data);
         });
-
-        let data = new Object();
-
-        data = {
-          name: dir.toUpperCase(),
-          value: cmds.length === 0 ? "Procesando..." : cmds.join(", "),
-        };
-
-        categories.push(data);
-      });
 
       const embed = new MessageEmbed()
         .setTitle("Lista de comandos:")
@@ -65,6 +66,13 @@ module.exports = {
         });
       }
 
+      if ((command.priv) && (message.author.id != '556249326951727115')) {
+        message.delete();
+        return message.channel.send('No tienes permisos para ver o usar este comando.').then(msg => {
+          msg.delete({ timeout: 10000 });
+        });
+      }
+
       const embed = new MessageEmbed()
         .setTitle("Información del comando:")
         .addField(
@@ -89,7 +97,7 @@ module.exports = {
             ? command.description
             : "Este comando no tiene descripción."
         )
-        .setFooter('*Los parámetros entre [] son opcionales.*')
+        .setFooter('*Los parámetros entre [] son opcionales y los parámetros entre <> son obligatorios.*')
         .setColor('#fc03f4');
       message.delete();
       return message.channel.send(embed);

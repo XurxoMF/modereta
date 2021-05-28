@@ -12,10 +12,28 @@ app.listen(port);
 const fs = require('fs');
 const Discord = require('discord.js');
 const { prefix, token } = require('./config.json');
+const uwudb = require('uwudb');
+const uwudbCliente = new uwudb.uwuCliente({dir: './database', nombre: 'data', WAL: false})
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 client.cooldowns = new Discord.Collection();
+
+
+////// ESQUEMAS //////
+
+const framesEsquema = new uwudb.Esquema({
+  nombre: 'string',
+  bit1: 'string',
+  bit2: 'string',
+  foto: 'string',
+  color: 'string'
+  })
+  
+  ////// CREACIÓN DB //////
+  
+  client.framesDB = uwudbCliente.crearDB('framesDB', framesEsquema)
+  
 
 const commandFolders = fs.readdirSync('./comandos');
 
