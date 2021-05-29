@@ -12,28 +12,12 @@ app.listen(port);
 const fs = require('fs');
 const Discord = require('discord.js');
 const { prefix, token } = require('./config.json');
-const uwudb = require('uwudb');
-const uwudbCliente = new uwudb.uwuCliente({dir: './database', nombre: 'data', WAL: false})
+const sqlite3 = require('sqlite3').verbose();
+const db = new sqlite3.Database("./database.sqlite");
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 client.cooldowns = new Discord.Collection();
-
-
-////// ESQUEMAS //////
-
-const framesEsquema = new uwudb.Esquema({
-  nombre: 'string',
-  bit1: 'string',
-  bit2: 'string',
-  foto: 'string',
-  color: 'string'
-  })
-  
-  ////// CREACIÓN DB //////
-  
-  client.framesDB = uwudbCliente.crearDB('framesDB', framesEsquema)
-  
 
 const commandFolders = fs.readdirSync('./comandos');
 
@@ -54,6 +38,14 @@ client.on('ready', () => {
       type: 'WATCHING'
     }
   });
+
+  db.run('CREATE TABLE IF NOT EXISTS karutaframes (nombre TEXT, bit1 TEXT, bit2 TEXT, foto TEXT, color TEXT)', function (err) {
+    if (err) {
+      return console.error(err.message);
+    }
+    console.log('karutaframes conectada desde database.sqlite');
+  })
+
 });
 
 client.on('message', message => {
@@ -567,7 +559,7 @@ client.on('message', message => {
   setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 
   try {
-    command.execute(client, message, args);
+    command.execute(client, message, args, db);
   } catch (error) {
     console.error(error);
     message.delete({ timeout: 10000 });
