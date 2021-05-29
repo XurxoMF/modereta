@@ -3,7 +3,7 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
     name: 'framenombre',
     description: 'Busca un frame por el nombre.',
-    aliases: ['framename'],
+    aliases: ['framename', 'fn'],
     cooldown: 5,
     usage: '<Nombre del frame>',
     execute(client, message, args, db) {
