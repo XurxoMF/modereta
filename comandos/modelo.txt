@@ -1,0 +1,14 @@
+module.exports = {
+    name: 'nombre',
+    description: 'Descripción.',
+    aliases: ['alias1', 'alias2'],
+    cooldown: 5,
+    priv: true,
+    usage: 'uso',
+    args: true,
+    guildOny: true,
+    args: true,
+    execute(client, message, args, db) {
+
+    },
+};
