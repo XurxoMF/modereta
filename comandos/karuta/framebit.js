@@ -57,8 +57,8 @@ module.exports = {
                         const isBackwards = (reaction, user) => reaction.emoji.name === '⏪' && user.id === message.author.id;
                         const isForwards = (reaction, user) => reaction.emoji.name === '⏩' && user.id === message.author.id;
 
-                        const backwards = msg.createReactionCollector(isBackwards);
-                        const forwards = msg.createReactionCollector(isForwards);
+                        const backwards = msg.createReactionCollector(isBackwards, {idle: (3 * 60) * 1000});
+                        const forwards = msg.createReactionCollector(isForwards, {idle: (3 * 60) * 1000});
 
                         let frame = 0;
 
@@ -98,7 +98,7 @@ module.exports = {
                             msg.edit(embedforward)
                         });
                     });
-                });;
+                });
             })
 
         } else {
