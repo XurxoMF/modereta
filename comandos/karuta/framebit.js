@@ -10,6 +10,7 @@ module.exports = {
         message.delete();
 
         let categories = [];
+        let img = [];
         let datos = args.join(" ").split(", ")
         let bitsin1 = datos[0].toLowerCase()
 
@@ -29,21 +30,75 @@ module.exports = {
                     const name = doc.nombre;
                     const bi1 = doc.bit1;
                     const bi2 = doc.bit2;
+                    const imagen = doc.foto;
 
                     let data = new Object();
+                    let imgdata = new Object();
 
                     data = {
                         name: name,
                         value: `2,500 ${bi1} bits | 2,500 ${bi2} bits`,
                     };
 
+                    imgdata = imagen;
+
                     categories.push(data);
+                    img.push(imgdata);
                 });
+
                 const embed = new MessageEmbed()
                     .setTitle(`Frames que usen ${bitsin1} bits:`)
                     .addFields(categories)
                     .setColor(`#84e3ca`);
-                return message.channel.send(embed);
+
+                return message.channel.send(embed).then(msg => {
+                    msg.react('⏪').then(r => {
+                        msg.react('⏩');
+                        const isBackwards = (reaction, user) => reaction.emoji.name === '⏪' && user.id === message.author.id;
+                        const isForwards = (reaction, user) => reaction.emoji.name === '⏩' && user.id === message.author.id;
+
+                        const backwards = msg.createReactionCollector(isBackwards);
+                        const forwards = msg.createReactionCollector(isForwards);
+
+                        let frame = 0;
+
+                        backwards.on("collect", r => {
+                            if (frame == 0) return;
+                            if (frame == 1) {
+                                frame--;
+                                const embedprincipal = new MessageEmbed()
+                                    .setTitle(`Frames que usen ${bitsin1} bits:`)
+                                    .addFields(categories)
+                                    .setColor(`#84e3ca`);
+
+                                msg.edit(embedprincipal)
+
+                            } else {
+
+                                frame--;
+                                const embedback = new MessageEmbed()
+                                    .setColor(`#84e3ca`)
+                                    .addFields(categories[frame - 1])
+                                    .setImage(img[frame - 1])
+                                    .setFooter(`Frame ${frame} de ${filas.length}`)
+                                msg.edit(embedback)
+                            }
+                        });
+
+
+                        forwards.on("collect", r => {
+                            if (frame == filas.length) return;
+                            frame++;
+                            const embedforward = new MessageEmbed()
+                                .setColor(`#84e3ca`)
+                                .addFields(categories[frame - 1])
+                                .setImage(img[frame - 1])
+                                .setFooter(`Frame ${frame} de ${filas.length}`)
+
+                            msg.edit(embedforward)
+                        });
+                    });
+                });;
             })
 
         } else {
