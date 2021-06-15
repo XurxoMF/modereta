@@ -75,6 +75,11 @@ client.on('message', message => {
 
   //////     KARUTA     //////
 
+  //Notificacións Karuta drop
+  if ((message.author.id === '646937666251915264') && (message.content.includes('cards since this server is currently active!'))) {
+    return message.channel.send('<@854464108475711518>, Karuta está dropeando.')
+  }
+
   //Mod Karuta temporaly restriction.
   if ((messageContent.includes('a temporary restriction is preventing you from using that command for another')) && (message.author.id == '646937666251915264')) {
     message.delete({ timeout: 10000 });
