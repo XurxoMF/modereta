@@ -77,7 +77,7 @@ client.on('message', message => {
 
   //Notificacións Karuta drop
   if ((message.author.id === '646937666251915264') && (message.content.includes('cards since this server is currently active!'))) {
-    return message.channel.send('<@854464108475711518>, Karuta está dropeando.');
+    return message.channel.send('@KarutaDrop, Karuta está dropeando.');
   }
 
   //Mod Karuta temporaly restriction.
