@@ -28,7 +28,7 @@ module.exports = {
                         .setColor('#a30584')
                         .setDescription(`${usersend} ha acabado con ${useract} X_X`)
                         .setImage(gifs[Math.floor(Math.random() * gifs.length)])
-                        .setFooter(`${useractname} ha sido asesinado 1 vez.`);
+                        .setFooter(`${useractname} ha sido asesinad@ 1 vez.`);
                     message.channel.send(embed);
                 });
 
@@ -42,7 +42,7 @@ module.exports = {
                         .setColor('#a30584')
                         .setDescription(`${usersend} ha acabado con ${useract} X_X`)
                         .setImage(gifs[Math.floor(Math.random() * gifs.length)])
-                        .setFooter(`${useractname} ha sido asesinado ${sumar} veces.`);
+                        .setFooter(`${useractname} ha sido asesinad@ ${sumar} veces.`);
                     message.channel.send(embed);
 
                 });

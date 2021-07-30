@@ -28,7 +28,7 @@ module.exports = {
                         .setColor('#a30584')
                         .setDescription(`${usersend} está observando fijamente a ${useract}.)`)
                         .setImage(gifs[Math.floor(Math.random() * gifs.length)])
-                        .setFooter(`A ${useractname} lo han observado fijamente 1 vez.`);
+                        .setFooter(`A ${useractname} l@ han observado fijamente 1 vez.`);
                     message.channel.send(embed);
                 });
 
@@ -42,7 +42,7 @@ module.exports = {
                         .setColor('#a30584')
                         .setDescription(`${usersend} está observando fijamente a ${useract}.`)
                         .setImage(gifs[Math.floor(Math.random() * gifs.length)])
-                        .setFooter(`A ${useractname} lo han observado fijamente ${sumar} veces.`);
+                        .setFooter(`A ${useractname} l@ han observado fijamente ${sumar} veces.`);
                     message.channel.send(embed);
 
                 });
