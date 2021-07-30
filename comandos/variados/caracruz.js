@@ -5,9 +5,9 @@ module.exports = {
     description: 'Ping!',
     aliases: ['cc'],
     execute(client, message, args, db) {
-        let datos = args.join(" ").split(", ")
-        let cara = datos[0]
-        let cruz = datos[1]
+        let datos = args.join(" ").split(",")
+        let cara = datos[0].trim()
+        let cruz = datos[1].trim()
 
         let posibles = [`**cara** (${cara})`, `**cruz** (${cruz})`];
         let resultado = posibles[Math.floor(Math.random() * posibles.length)];

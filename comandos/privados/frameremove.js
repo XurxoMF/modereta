@@ -12,8 +12,8 @@ module.exports = {
             msg.delete({ timeout: 5000 })
         });
 
-        let datos = args.join(" ").split(", ")
-        let nombre = datos[0].toLowerCase()
+        let datos = args.join(" ").split(",")
+        let nombre = datos[0].trim().toLowerCase()
 
         if (!datos[0]) return message.channel.send('Faltan argumentos. Usa *`help frameremove`* para ver como usarlos.').then((msg) =>{
             msg.delete({ timeout: 5000 })

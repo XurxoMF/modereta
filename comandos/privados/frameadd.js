@@ -12,12 +12,12 @@ module.exports = {
             msg.delete({ timeout: 5000 })
         });
 
-        let datos = args.join(" ").split(", ")
-        let nombre = datos[0].toLowerCase()
-        let bit1 = datos[1].toLowerCase()
-        let bit2 = datos[2].toLowerCase()
-        let foto = datos[3]
-        let color = datos[4]
+        let datos = args.join(" ").split(",")
+        let nombre = datos[0].trim().toLowerCase()
+        let bit1 = datos[1].trim().toLowerCase()
+        let bit2 = datos[2].trim().toLowerCase()
+        let foto = datos[3].trim()
+        let color = datos[4].trim()
 
         if (!datos[0]) return message.channel.send('Faltan argumentos. Usa *`help frameadd`* para ver como usarlos.').then((msg) =>{
             msg.delete({ timeout: 5000 })

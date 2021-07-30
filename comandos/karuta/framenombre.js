@@ -12,7 +12,7 @@ module.exports = {
         let colorframe = [];
         let imagen = [];
         let datos = args.join(" ").split(", ")
-        let nombrein = datos[0].toLowerCase()
+        let nombrein = datos[0].trim().toLowerCase()
 
         if (!datos[0]) return message.channel.send('Faltan argumentos. Usa *`help framenombre`* para ver como usarlos.');
 

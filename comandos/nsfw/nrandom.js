@@ -10,7 +10,7 @@ module.exports = {
               msg.delete({ timeout: 10000});
             });
         } else {
-            const ncode = args[0].toLowerCase();
+            const ncode = args[0].trim();
             message.delete();
             message.channel.send(`https://www.nhentai.net/g/${ncode}/`).then(msg =>{
               msg.delete({ timeout: 10000 });

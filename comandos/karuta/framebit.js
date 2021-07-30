@@ -10,8 +10,8 @@ module.exports = {
 
         let categories = [];
         let img = [];
-        let datos = args.join(" ").split(", ")
-        let bitsin1 = datos[0].toLowerCase()
+        let datos = args.join(" ").split(",")
+        let bitsin1 = datos[0].trim().toLowerCase()
 
         if (!datos[0]) return message.channel.send('Faltan argumentos. Usa *`help framebit`* para ver como usarlos.');
 
@@ -98,7 +98,7 @@ module.exports = {
 
         } else {
 
-            let bitsin2 = datos[1].toLowerCase()
+            let bitsin2 = datos[1].trim().toLowerCase()
 
             db.all(`SELECT * FROM karutaframes WHERE ((bit1 = ? OR bit1 = ?) AND (bit2 = ? OR bit2 = ?))`, [bitsin1, bitsin2, bitsin1, bitsin2], (err, filas) => {
                 if (err) return console.error(err.message)
