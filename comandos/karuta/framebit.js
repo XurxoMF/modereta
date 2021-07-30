@@ -7,24 +7,19 @@ module.exports = {
     cooldown: 5,
     usage: '<Tipo de bit> [Segundo tipo de bit]',
     execute(client, message, args, db) {
-        message.delete();
 
         let categories = [];
         let img = [];
         let datos = args.join(" ").split(", ")
         let bitsin1 = datos[0].toLowerCase()
 
-        if (!datos[0]) return message.channel.send('Faltan argumentos. Usa *`help framebit`* para ver como usarlos.').then((msg) => {
-            msg.delete({ timeout: 5000 })
-        });
+        if (!datos[0]) return message.channel.send('Faltan argumentos. Usa *`help framebit`* para ver como usarlos.');
 
         if (!datos[1]) {
 
             db.all(`SELECT * FROM karutaframes WHERE bit1 = ? OR bit2 = ?`, [bitsin1, bitsin1], (err, filas) => {
                 if (err) return console.error(err.message)
-                if (!filas || !filas[0]) return message.channel.send('No hay frames que usen ese tipo de bit.').then((msg) => {
-                    msg.delete({ timeout: 5000 })
-                })
+                if (!filas || !filas[0]) return message.channel.send('No hay frames que usen ese tipo de bit.')
 
                 filas.forEach((doc) => {
                     const name = doc.nombre;
@@ -107,9 +102,7 @@ module.exports = {
 
             db.all(`SELECT * FROM karutaframes WHERE ((bit1 = ? OR bit1 = ?) AND (bit2 = ? OR bit2 = ?))`, [bitsin1, bitsin2, bitsin1, bitsin2], (err, filas) => {
                 if (err) return console.error(err.message)
-                if (!filas || !filas[0]) return message.channel.send('No hay frames que usen esos dos bits juntos.').then((msg) => {
-                    msg.delete({ timeout: 5000 })
-                })
+                if (!filas || !filas[0]) return message.channel.send('No hay frames que usen esos dos bits juntos.')
 
                 filas.forEach((doc) => {
                     const name = doc.nombre;

@@ -45,9 +45,7 @@ module.exports = {
         .setDescription(
           `Si quieres ver como se usa un comando en concreto usa \`${prefix}help\` seguido del comando que necesites. Ejemplo: \`${prefix}help ping\`.`
         )
-        .setTimestamp()
         .setColor('#fc03f4');
-      message.delete();
       return message.channel.send(embed);
     } else {
       const command =
@@ -60,17 +58,11 @@ module.exports = {
         const embed = new MessageEmbed()
           .setTitle(`No existe ese comando! Puedes usar \`${prefix}help\` para ver los comandos disponibles.`)
           .setColor("FF0000");
-        message.delete();
-        return message.channel.send(embed).then(msg => {
-          msg.delete({ timeout: 10000 });
-        });
+        return message.channel.send(embed);
       }
 
       if ((command.priv) && (message.author.id != '556249326951727115')) {
-        message.delete();
-        return message.channel.send('No tienes permisos para ver o usar este comando.').then(msg => {
-          msg.delete({ timeout: 10000 });
-        });
+        return message.channel.send('No tienes permisos para ver o usar este comando.');
       }
 
       const embed = new MessageEmbed()
@@ -99,7 +91,6 @@ module.exports = {
         )
         .setFooter('*Los parámetros entre [] son opcionales y los parámetros entre <> son obligatorios.*')
         .setColor('#fc03f4');
-      message.delete();
       return message.channel.send(embed);
     }
   },

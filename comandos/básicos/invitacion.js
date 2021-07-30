@@ -4,9 +4,6 @@ module.exports = {
     cooldown: 10,
       aliases: ['invitación', 'invi'],
     execute(client, message) {
-      message.delete();
-      message.channel.send('https://discord.gg/ZvB55s4').then(msg => {
-        msg.delete({ timeout: 10000 });
-      });
+      message.channel.send('https://discord.gg/ZvB55s4');
     },
   };

@@ -7,7 +7,6 @@ module.exports = {
     cooldown: 5,
     usage: '<Nombre del frame>',
     execute(client, message, args, db) {
-        message.delete();
 
         let categories = [];
         let colorframe = [];
@@ -15,15 +14,11 @@ module.exports = {
         let datos = args.join(" ").split(", ")
         let nombrein = datos[0].toLowerCase()
 
-        if (!datos[0]) return message.channel.send('Faltan argumentos. Usa *`help framenombre`* para ver como usarlos.').then((msg) =>{
-            msg.delete({ timeout: 5000 })
-        });
+        if (!datos[0]) return message.channel.send('Faltan argumentos. Usa *`help framenombre`* para ver como usarlos.');
 
         db.all(`SELECT * FROM karutaframes WHERE nombre = ?`, [nombrein], (err, filas) => {
             if (err) return console.error(err.message)
-            if (!filas || !filas[0]) return message.channel.send('No se han encontrado datos para ese frame.').then((msg) =>{
-                msg.delete({ timeout: 5000 })
-            })
+            if (!filas || !filas[0]) return message.channel.send('No se han encontrado datos para ese frame.')
             filas.forEach((doc) => {
                 const name = doc.nombre;
                 const bi1 = doc.bit1;

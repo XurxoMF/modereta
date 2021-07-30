@@ -46,6 +46,13 @@ client.on('ready', () => {
     console.log('karutaframes conectada desde database.sqlite');
   })
 
+  db.run('CREATE TABLE IF NOT EXISTS accionesdb (usuario TEXT, accion TEXT, cant INTEGER)', function (err) {
+    if (err) {
+      return console.error(err.message);
+    }
+    console.log('accionesdb conectada desde database.sqlite');
+  })
+
 });
 
 client.on('message', message => {
@@ -411,15 +418,11 @@ client.on('message', message => {
   if (command.permissions) {
     const authorPerms = message.channel.permissionsFor(message.author);
     if (!authorPerms || !authorPerms.has(command.permissions)) {
-      message.delete({ timeout: 10000 });
-      return message.reply('No tienes los permisos necesarios.').then(msg => {
-        msg.delete({ timeout: 10000 });
-      });
+      return message.reply('No tienes los permisos necesarios.');
     }
   }
 
   if (command.args && !args.length) {
-    message.delete({ timeout: 10000 });
     let reply = `${message.author}, faltan argumentos!`
 
     if (command.usage) {
@@ -445,11 +448,8 @@ client.on('message', message => {
     const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
 
     if (now < expirationTime) {
-      message.delete();
       const timeLeft = (expirationTime - now) / 1000;
-      return message.reply(`Por favor, espera **\`${timeLeft.toFixed(1)}\`** segundos más antes de usar el comando \`${command.name}\` de nuevo.`).then(msg => {
-        msg.delete({ timeout: 10000 });
-      });
+      return message.reply(`Por favor, espera **\`${timeLeft.toFixed(1)}\`** segundos más antes de usar el comando \`${command.name}\` de nuevo.`);
     }
   }
 
@@ -460,10 +460,7 @@ client.on('message', message => {
     command.execute(client, message, args, db);
   } catch (error) {
     console.error(error);
-    message.delete({ timeout: 10000 });
-    message.reply('Ha ocurrido un error al ejecutar el comando, notifícanoslo en el canal de sugerencias').then(msg => {
-      msg.delete({ timeout: 10000 });
-    });
+    message.reply('Ha ocurrido un error al ejecutar el comando, notifícanoslo en el canal de sugerencias');
   }
 });
 
