@@ -2,9 +2,9 @@ const { MessageEmbed } = require("discord.js");
 const { MessageButton } = require("discord-buttons");
 
 module.exports = {
-    name: 'framebitb',
+    name: 'framebit',
     description: 'Busca un frame por el tipo de bits que usa.',
-    aliases: ['fbb'],
+    aliases: ['fb'],
     cooldown: 5,
     usage: '<Tipo de bit> [Segundo tipo de bit]',
     async execute(client, message, args, db) {
