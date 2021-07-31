@@ -4,6 +4,7 @@ module.exports = {
     name: 'observar',
     description: 'Miras fijamente a la persona a la que mencionas.',
     aliases: ['ver', 'mirar', 'stare'],
+    usage: '<@usuario>',
     execute(client, message, args, db) {
         let useract = message.mentions.users.first();
 

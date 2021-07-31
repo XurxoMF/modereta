@@ -1,7 +1,7 @@
 module.exports = {
     name: 'nrandom',
     description: 'Envía enlace a un doujin random de nHenati.net o a un doujin en concreto.',
-    usage: '[código]',
+    usage: '[código de 6 dígitos]',
     cooldown: 10,
     execute(client, message, args) {
         if (!args.length) {

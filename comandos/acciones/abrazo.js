@@ -4,6 +4,7 @@ module.exports = {
     name: 'abrazo',
     description: 'Le das un abrazo a la persona a la que menciones.',
     aliases: ['abrazar', 'hug'],
+    usage: '<@usuario>',
     execute(client, message, args, db) {
         let useract = message.mentions.users.first();
 

@@ -4,6 +4,7 @@ module.exports = {
     name: 'caricias',
     description: 'Acaricias a la persona a la que mencionas.',
     aliases: ['acariciar', 'pat'],
+    usage: '<@usuario>',
     execute(client, message, args, db) {
         let useract = message.mentions.users.first();
 
@@ -26,7 +27,7 @@ module.exports = {
                     if (err) return console.error(err.message)
                     const embed = new MessageEmbed()
                         .setColor('#a30584')
-                        .setDescription(`${usersend} está acariciando a ${useract}, que kawaii.)`)
+                        .setDescription(`${usersend} está acariciando a ${useract}, que kawaii.`)
                         .setImage(gifs[Math.floor(Math.random() * gifs.length)])
                         .setFooter(`${useractname} ha recibido 1 caricia.`);
                     message.channel.send(embed);

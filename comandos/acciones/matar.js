@@ -4,6 +4,7 @@ module.exports = {
     name: 'matar',
     description: 'Asesinas a la persona a la que menciones.',
     aliases: ['asesinar', 'kill'],
+    usage: '<@usuario>',
     execute(client, message, args, db) {
         let useract = message.mentions.users.first();
 
