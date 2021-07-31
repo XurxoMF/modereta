@@ -14,10 +14,12 @@ const Discord = require('discord.js');
 const { prefix, token } = require('./config.json');
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database("./database.sqlite");
+const { MessageButton } = require("discord-buttons")
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 client.cooldowns = new Discord.Collection();
+require("discord-buttons")(client);
 
 const commandFolders = fs.readdirSync('./comandos');
 
