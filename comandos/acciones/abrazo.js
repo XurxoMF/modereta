@@ -10,7 +10,15 @@ module.exports = {
 
         if (!useract) return message.channel.send(`No has mencionado a nadie.`);
 
-        let gifs = ['https://i.imgur.com/3VkyJRf.gif', 'https://i.imgur.com/7NWzEo9.gif', 'https://i.imgur.com/Ac5hL7R.gif', 'https://i.imgur.com/YyTLSSW.gif', 'https://i.imgur.com/AJT8rjJ.gif', 'https://i.imgur.com/aOowZys.gif', 'https://i.imgur.com/iImslkE.gif', 'https://i.imgur.com/LBPYSzD.gif'];
+        let gifs = ['https://i.postimg.cc/PrpPmNBm/1.gif',
+            'https://i.postimg.cc/vTp8PLp5/2.gif',
+            'https://i.postimg.cc/76ZLbL3J/3.gif',
+            'https://i.postimg.cc/PfcqrTPN/4.gif',
+            'https://i.postimg.cc/hjZtmqsy/5.gif',
+            'https://i.postimg.cc/L8j5bw45/6.gif',
+            'https://i.postimg.cc/C5ZLH66F/7.gif',
+            'https://i.postimg.cc/BQrtN40R/8.gif',
+            ];
         let usersend = message.member.user;
         let useractname = message.mentions.members.first().nickname || message.mentions.users.first().username;
         let nameacction = this.name;

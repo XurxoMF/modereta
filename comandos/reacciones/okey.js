@@ -5,7 +5,15 @@ module.exports = {
     description: 'Envía un gif diciendo ok.',
     aliases: ['ok', 'thumbsup', 'thumbs'],
     execute(client, message) {
-      let gifs = ['https://i.imgur.com/ijWUJrB.gif', 'https://i.imgur.com/PJ6ObqC.gif', 'https://i.imgur.com/d7suuUx.gif', 'https://i.imgur.com/m8SOaC1.gif', 'https://i.imgur.com/8zV6A0T.gif', 'https://i.imgur.com/HeSJSHO.gif', 'https://i.imgur.com/Kg3VSV4.gif', 'https://i.imgur.com/J5b4LkQ.gif']
+      let gifs = ['https://i.postimg.cc/Dw3RVtj4/1.gif',
+        'https://i.postimg.cc/ydGrL53d/2.gif',
+        'https://i.postimg.cc/Bn5kJMkY/3.gif',
+        'https://i.postimg.cc/tJLw4f9f/4.gif',
+        'https://i.postimg.cc/sDhbNVcR/5.gif',
+        'https://i.postimg.cc/mr8nHhb7/6.gif',
+        'https://i.postimg.cc/G3NZKBvQ/7.gif',
+        'https://i.postimg.cc/DZ0MdFZH/8.gif',
+        ]
       let usersend = message.member.user
       const embed = new MessageEmbed()
       .setColor('#fc03f4')
