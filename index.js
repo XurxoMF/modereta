@@ -57,6 +57,19 @@ client.on('ready', () => {
 
 });
 
+client.on("guildMemberAdd", (member) => {
+  const embed = new Discord.MessageEmbed()
+    .setTitle("BIENVENID@ A ASTROMUNIDAD KARUTA")
+    .setDescription('Para disfrutar de todo el contenido del servidor te recomendamos que hagas lo siguiente:')
+    .setColor("#eb34d5")
+    .addField("📋 Lee las normas!!", "Lee las [Normas e Información](https://discord.com/channels/726133117722820671/726158974084186152) para evitar amonestaciones innecesarias!")
+    .addField("🌈 Asígnate algunos roles!!", "Asignate roles en [Autorroles](https://discord.com/channels/726133117722820671/726143481415860255) para descubrir nuevas categorías o cambiar el color de tu nombre.")
+    .addField("💬 Habla para subir de nivel!!", "Al subir de nivel desbloquearás ventajas exclusivas. Puedes ver tu nivel y las recompensas en el mensaje anclado en [Niveles](https://discord.com/channels/726133117722820671/741608890533412875).")
+    .addField("🤖 Comandos de bots!!", "Puedes ver los comandos de los bots de AstroMunidad en [Info bots](https://discord.com/channels/726133117722820671/849765675891425301).");
+  member.send(embed);
+  member.roles.add(["864656505541623849", "726143285545926736", "864650641167351818", "864649993453174805"]);
+});
+
 client.on('message', message => {
 
   if (message.author.id == `748161670945177641`) return;
