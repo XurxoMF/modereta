@@ -92,7 +92,8 @@ client.on('message', message => {
   let wordskarutaviewdyes = ['kv $', 'k!v $', 'kv  $', 'k!v  $'];
   let wordsiteminfo = ['kii', 'k!ii', 'kiteminfo', 'k!iteminfo'];
   let dyechannels = ['815976854652715058', '815978239008833616', '815978326048112650', '815978402876096523', '815978511512502314', '815978638561640518', '815978751749390386', '815978956053413898', '815978913389871134', '816628785523851304', '815979234698199110', '821416773625577482', '815981553921818644'];
-  let cartaschannels = ['814594761049636895', '846743034867482644', '815931846340640768', '846743084724387850', '815931883882807368', '846743131764293652'];
+  let cartaschannels = ['814594761049636895', '846743034867482644', '815931846340640768', '846743084724387850', '815931883882807368', '846743131764293652', '876885140809343017', '876885514345644102', '876885533199048704'];
+  let burnpricechannels = ['815932343759142962', '876916288214143087', '876916432200425533'];
 
 
   //////     KARUTA     //////
@@ -200,7 +201,7 @@ client.on('message', message => {
   }
 
   //Mod cartas-en-venta
-  if (cartaschannels.some(channel => message.channel.id === channel)) {
+  if ((cartaschannels.some(channel => message.channel.id === channel)) && (message.author.id != '556249326951727115')) {
     if (wordskarutaview.some(word => messageContent.startsWith(word))) {
     } else {
       if (
@@ -237,7 +238,7 @@ client.on('message', message => {
   }
 
   //Mod venta dyes
-  if (message.channel.id == `815932201740402688`) {
+  if ((message.channel.id == `815932201740402688`) && (message.author.id != '556249326951727115')) {
     if (wordskarutaviewdyes.some(word => messageContent.startsWith(word))) {
     } else {
       if (
@@ -273,8 +274,8 @@ client.on('message', message => {
     return;
   }
 
-  //Mod cartas-gratis
-  if (message.channel.id == `815932343759142962`) {
+  //Mod burn-price
+  if ((burnpricechannels.some(channel => message.channel.id === channel)) && (message.author.id != '556249326951727115')) {
     if (wordskarutaview.some(word => messageContent.startsWith(word))) {
     } else {
       if (
@@ -284,7 +285,7 @@ client.on('message', message => {
         message.delete();
         message.channel
           .send(
-            'En este canal solo se pueden usar los comandos ***`kv`***, ***`kview`***, ***`k!v`*** y ***`k!view`***.'
+            'En este canal solo se pueden usar los comandos ***`kb`***, ***`kburn`***.'
           )
           .then(msg => {
             msg.delete({ timeout: 10000 });
