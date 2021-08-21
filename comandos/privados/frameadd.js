@@ -1,5 +1,3 @@
-const { TextChannel } = require("discord.js");
-
 module.exports = {
     name: 'frameadd',
     description: 'Añade un marco a la db',

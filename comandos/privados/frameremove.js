@@ -1,5 +1,3 @@
-const { TextChannel } = require("discord.js");
-
 module.exports = {
     name: 'frameremove',
     description: 'Elimina un marco a la db',

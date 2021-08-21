@@ -1,0 +1,14 @@
+const { MessageEmbed } = require("discord.js");
+const { MessageButton } = require("discord-buttons");
+
+module.exports = {
+    name: '',
+    description: '',
+    aliases: ['', ''],
+    priv: true,
+    cooldown: 10,
+    usage: '',
+    execute(client, message, args, db) {
+        
+    },
+};
