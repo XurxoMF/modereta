@@ -24,8 +24,8 @@ module.exports = {
           }));
 
     
-        if (parseInt(args[0]) > 100) {
-            return message.delete().then(message.channel.send('Solo puedo borrar un máximo de 100 mensajes!').then(msg => {
+        if (parseInt(args[0]) >= 100) {
+            return message.delete().then(message.channel.send('Solo puedo borrar un máximo de 99 mensajes!').then(msg => {
                 msg.delete({ timeout: 2000 });
               }));
         } else {
