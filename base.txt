@@ -8,7 +8,7 @@ module.exports = {
     priv: true,
     cooldown: 10,
     usage: '',
-    execute(client, message, args, db) {
+    execute(client, message, args, kfdb, acciondb) {
         
     },
 };

@@ -6,19 +6,23 @@ module.exports = {
     aliases: ['framename', 'fn'],
     cooldown: 5,
     usage: '<Nombre del frame>',
-    execute(client, message, args, db) {
+    async execute(client, message, args, kfdb, acciondb) {
 
         let categories = [];
         let colorframe = [];
         let imagen = [];
-        let datos = args.join(" ").split(", ")
-        let nombrein = datos[0].trim().toLowerCase()
+        let datos = args.join(" ").split(", ");
 
         if (!datos[0]) return message.channel.send('Faltan argumentos. Usa *`help framenombre`* para ver como usarlos.');
 
-        db.all(`SELECT * FROM karutaframes WHERE nombre = ?`, [nombrein], (err, filas) => {
-            if (err) return console.error(err.message)
-            if (!filas || !filas[0]) return message.channel.send('No se han encontrado datos para ese frame.')
+        let nombrein = datos[0].trim().toLowerCase();
+
+        const filas = await kfdb.find({ nombre: `${nombrein}` }).exec().catch((err) => {
+            return console.log(err);
+          });
+        
+          if (filas == null || !filas[0]) return message.channel.send('No se han encontrado datos para ese frame.');
+
             filas.forEach((doc) => {
                 const name = doc.nombre;
                 const bi1 = doc.bit1;
@@ -52,6 +56,5 @@ module.exports = {
                 .setColor(`${colorframe}`)
                 .setImage(`${imagen}`);
             return message.channel.send(embed);
-        })
     },
 };

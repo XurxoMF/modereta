@@ -3,7 +3,7 @@ module.exports = {
     description: 'Envía enlace a un doujin random de nHenati.net o a un doujin en concreto.',
     usage: '[código de 6 dígitos]',
     cooldown: 10,
-    execute(client, message, args) {
+    execute(client, message, args, kfdb, acciondb) {
         if (!args.length) {
             message.delete();
             return message.channel.send('https://nhentai.net/random/').then(msg => {

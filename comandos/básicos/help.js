@@ -8,7 +8,7 @@ module.exports = {
   aliases: ['ayuda', 'comandos', 'info'],
   usage: '[comando]',
   cooldown: 5,
-  execute(client, message, args) {
+  execute(client, message, args, kfdb, acciondb) {
 
     if (!args[0]) {
       let categories = [];

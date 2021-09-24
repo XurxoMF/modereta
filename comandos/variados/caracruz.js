@@ -5,7 +5,7 @@ module.exports = {
     description: 'Tira una moneda y saca un resultado aleatorio, cara o cruz.',
     aliases: ['cc'],
     usage: '<cara>, <cruz>',
-    execute(client, message, args, db) {
+    execute(client, message, args, kfdb, acciondb) {
         let datos = args.join(" ").split(",")
         let cara = datos[0].trim()
         let cruz = datos[1].trim()

@@ -4,7 +4,7 @@ module.exports = {
     name: 'enfado',
     description: 'Envía un gif con cara de enfado.',
     aliases: ['pout', 'enfadado'],
-    execute(client, message) {
+    execute(client, message, args, kfdb, acciondb) {
       let gifs = ['https://i.postimg.cc/j53hs7Rk/1.gif',
         'https://i.postimg.cc/bJwTcTft/2.gif',
         'https://i.postimg.cc/qvcXNYkK/3.gif',

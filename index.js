@@ -11,15 +11,23 @@ app.listen(port);
 
 const fs = require('fs');
 const Discord = require('discord.js');
-const { prefix, token } = require('./config.json');
-const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database("./database.sqlite");
-const { MessageButton } = require("discord-buttons")
+const { prefix, token, mongotoken } = require('./config.json');
+const { MessageButton } = require("discord-buttons");
+const mongoose = require('mongoose');
+const kfdb = require("./schemas/fkSchema");
+const acciondb = require("./schemas/accionesSchema");
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 client.cooldowns = new Discord.Collection();
 require("discord-buttons")(client);
+
+mongoose.connect(mongotoken, { 
+  useNewUrlParser: true, 
+  useUnifiedTopology: true 
+}).then((c) => {
+  console.log('Conectada a mongoABatlas!');
+}).catch((err) => console.log('Error al conectarse a mongoDBatlas!'));
 
 const commandFolders = fs.readdirSync('./comandos');
 
@@ -40,21 +48,6 @@ client.on('ready', () => {
       type: 'WATCHING'
     }
   });
-
-  db.run('CREATE TABLE IF NOT EXISTS karutaframes (nombre TEXT, bit1 TEXT, bit2 TEXT, foto TEXT, color TEXT)', function (err) {
-    if (err) {
-      return console.error(err.message);
-    }
-    console.log('karutaframes conectada desde database.sqlite');
-  })
-
-  db.run('CREATE TABLE IF NOT EXISTS accionesdb (usuario TEXT, accion TEXT, cant INTEGER)', function (err) {
-    if (err) {
-      return console.error(err.message);
-    }
-    console.log('accionesdb conectada desde database.sqlite');
-  })
-
 });
 
 client.on("guildMemberAdd", (member) => {
@@ -70,7 +63,7 @@ client.on("guildMemberAdd", (member) => {
   member.roles.add(["864656505541623849", "726143285545926736", "864650641167351818", "864649993453174805"]);
 });
 
-client.on('message', message => {
+client.on('message', async message => {
 
   if (message.author.id == `748161670945177641`) return;
 
@@ -473,7 +466,7 @@ client.on('message', message => {
   setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 
   try {
-    command.execute(client, message, args, db);
+    await command.execute(client, message, args, kfdb, acciondb);
   } catch (error) {
     console.error(error);
     message.reply('Ha ocurrido un error al ejecutar el comando, notifícanoslo en el canal de sugerencias');

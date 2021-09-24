@@ -6,7 +6,7 @@ module.exports = {
   aliases: ['cl'],
   priv: true,
   usage: '<número de mensajes, máximo 100>',
-  execute(client, message, args, db) {
+  execute(client, message, args, kfdb, acciondb) {
     if (message.author.id != 556249326951727115) return message.delete().then(message.channel.send('No puedes usar este comando ya que no tienes los permisos necesarios.').then(msg => {
       msg.delete({ timeout: 2000 });
     }));

@@ -7,7 +7,7 @@ module.exports = {
     aliases: ['fb'],
     cooldown: 5,
     usage: '<Tipo de bit> [Segundo tipo de bit]',
-    async execute(client, message, args, db) {
+    async execute(client, message, args, kfdb, acciondb) {
 
         let categories = [];
         let img = [];
@@ -18,240 +18,245 @@ module.exports = {
             msg.delete({ timeout: 5000 })
         });
 
+
         if (!datos[1]) {
 
-            db.all(`SELECT * FROM karutaframes WHERE bit1 = ? OR bit2 = ?`, [bitsin1, bitsin1], async (err, filas) => {
-                if (err) return console.error(err.message)
-                if (!filas || !filas[0]) return message.channel.send('No hay frames que usen ese tipo de bit.').then((msg) => {
-                    msg.delete({ timeout: 5000 })
-                })
+            const unbit = await kfdb.find({ $or: [{ bit1: `${bitsin1}` }, { bit2: `${bitsin1}` }] }).exec();
 
-                filas.forEach((doc) => {
-                    const name = doc.nombre;
-                    const bi1 = doc.bit1;
-                    const bi2 = doc.bit2;
-                    const imagen = doc.foto;
+            if (!unbit || !unbit[0]) return message.channel.send('No hay frames que usen ese tipo de bit.').then((msg) => {
+                msg.delete({ timeout: 5000 })
+            })
 
-                    let data = new Object();
-                    let imgdata = new Object();
+            unbit.forEach((doc) => {
+                const name = doc.nombre;
+                const bi1 = doc.bit1;
+                const bi2 = doc.bit2;
+                const imagen = doc.foto;
 
-                    data = {
-                        name: name,
-                        value: `2,500 ${bi1} bits | 2,500 ${bi2} bits`,
-                    };
+                let data = new Object();
+                let imgdata = new Object();
 
-                    imgdata = imagen;
+                data = {
+                    name: name,
+                    value: `2,500 ${bi1} bits | 2,500 ${bi2} bits`,
+                };
 
-                    categories.push(data);
-                    img.push(imgdata);
-                });
+                imgdata = imagen;
 
-                const embed = new MessageEmbed()
-                    .setTitle(`Frames que usen ${bitsin1} bits:`)
-                    .addFields(categories)
-                    .setColor(`#84e3ca`);
+                categories.push(data);
+                img.push(imgdata);
+            });
 
-                let backwardsbuttonon = new MessageButton().setStyle("blurple").setID("backbuton").setLabel("◀️")
-                let backwardsbuttonoff = new MessageButton().setStyle("blurple").setID("backbutoff").setLabel("◀️").setDisabled()
-                let forwardsbuttonon = new MessageButton().setStyle("blurple").setID("forwbuton").setLabel("▶️")
-                let forwardsbuttonoff = new MessageButton().setStyle("blurple").setID("forwbutoff").setLabel("▶️").setDisabled()
-                let listabuttonon = new MessageButton().setStyle("blurple").setID("listabuton").setLabel("📋")
-                let listabuttonoff = new MessageButton().setStyle("blurple").setID("listabutoff").setLabel("📋").setDisabled()
+            const embed = new MessageEmbed()
+                .setTitle(`Frames que usen ${bitsin1} bits:`)
+                .addFields(categories)
+                .setColor(`#84e3ca`);
 
-                return await message.channel.send(embed, { buttons: [backwardsbuttonoff, listabuttonoff, forwardsbuttonon] }).then(msg => {
+            let backwardsbuttonon = new MessageButton().setStyle("blurple").setID("backbuton").setLabel("◀️")
+            let backwardsbuttonoff = new MessageButton().setStyle("blurple").setID("backbutoff").setLabel("◀️").setDisabled()
+            let forwardsbuttonon = new MessageButton().setStyle("blurple").setID("forwbuton").setLabel("▶️")
+            let forwardsbuttonoff = new MessageButton().setStyle("blurple").setID("forwbutoff").setLabel("▶️").setDisabled()
+            let listabuttonon = new MessageButton().setStyle("blurple").setID("listabuton").setLabel("📋")
+            let listabuttonoff = new MessageButton().setStyle("blurple").setID("listabutoff").setLabel("📋").setDisabled()
 
-                    const collector = msg.createButtonCollector((button) => button.clicker.user.id === message.author.id, { time: 60000 });
+            return await message.channel.send(embed, { buttons: [backwardsbuttonoff, listabuttonoff, forwardsbuttonon] }).then((msg) => {
 
-                    let frame = 0;
+                const collector = msg.createButtonCollector((button) => button.clicker.user.id === message.author.id, { time: 60000 });
 
-                    collector.on("collect", (b) => {
-                        b.reply.defer();
+                let frame = 0;
 
-                        if (b.id == "forwbuton") {
-                            if (frame == filas.length - 1) {
+                collector.on("collect", (b) => {
+                    b.reply.defer();
 
-                                frame++;
-                                const embedforward = new MessageEmbed()
-                                    .setColor(`#84e3ca`)
-                                    .addFields(categories[frame - 1])
-                                    .setImage(img[frame - 1])
-                                    .setFooter(`Frame ${frame} de ${filas.length}`)
+                    if (b.id == "forwbuton") {
+                        if (frame == unbit.length - 1) {
 
-                                msg.edit(embedforward, { buttons: [backwardsbuttonon, listabuttonon, forwardsbuttonoff] })
+                            frame++;
+                            const embedforward = new MessageEmbed()
+                                .setColor(`#84e3ca`)
+                                .addFields(categories[frame - 1])
+                                .setImage(img[frame - 1])
+                                .setFooter(`Frame ${frame} de ${unbit.length}`)
 
-                            } else {
-
-                                frame++;
-                                const embedforward = new MessageEmbed()
-                                    .setColor(`#84e3ca`)
-                                    .addFields(categories[frame - 1])
-                                    .setImage(img[frame - 1])
-                                    .setFooter(`Frame ${frame} de ${filas.length}`)
-
-                                msg.edit(embedforward, { buttons: [backwardsbuttonon, listabuttonon, forwardsbuttonon] })
-                            }
+                            msg.edit(embedforward, { buttons: [backwardsbuttonon, listabuttonon, forwardsbuttonoff] })
 
                         } else {
 
-                            if (b.id == "backbuton") {
+                            frame++;
+                            const embedforward = new MessageEmbed()
+                                .setColor(`#84e3ca`)
+                                .addFields(categories[frame - 1])
+                                .setImage(img[frame - 1])
+                                .setFooter(`Frame ${frame} de ${unbit.length}`)
 
-                                if (frame == 1) {
+                            msg.edit(embedforward, { buttons: [backwardsbuttonon, listabuttonon, forwardsbuttonon] })
+                        }
 
-                                    frame--;
-                                    const embedprincipal = new MessageEmbed()
-                                        .setTitle(`Frames que usen ${bitsin1} bits:`)
-                                        .addFields(categories)
-                                        .setColor(`#84e3ca`);
+                    } else {
 
-                                    msg.edit(embedprincipal, { buttons: [backwardsbuttonoff, listabuttonoff, forwardsbuttonon] })
+                        if (b.id == "backbuton") {
 
-                                } else {
+                            if (frame == 1) {
 
-                                    frame--;
-                                    const embedback = new MessageEmbed()
-                                        .setColor(`#84e3ca`)
-                                        .addFields(categories[frame - 1])
-                                        .setImage(img[frame - 1])
-                                        .setFooter(`Frame ${frame} de ${filas.length}`)
-                                    msg.edit(embedback, { buttons: [backwardsbuttonon, listabuttonon, forwardsbuttonon] })
+                                frame--;
+                                const embedprincipal = new MessageEmbed()
+                                    .setTitle(`Frames que usen ${bitsin1} bits:`)
+                                    .addFields(categories)
+                                    .setColor(`#84e3ca`);
 
-                                }
+                                msg.edit(embedprincipal, { buttons: [backwardsbuttonoff, listabuttonoff, forwardsbuttonon] })
+
                             } else {
 
-                                if (b.id == "listabuton") {
-
-                                    frame = 0;
-                                    const embed = new MessageEmbed()
-                                        .setTitle(`Frames que usen ${bitsin1} bits:`)
-                                        .addFields(categories)
-                                        .setColor(`#84e3ca`);
-                                    msg.edit(embed, { buttons: [backwardsbuttonoff, listabuttonoff, forwardsbuttonon] })
-
-                                }
+                                frame--;
+                                const embedback = new MessageEmbed()
+                                    .setColor(`#84e3ca`)
+                                    .addFields(categories[frame - 1])
+                                    .setImage(img[frame - 1])
+                                    .setFooter(`Frame ${frame} de ${unbit.length}`)
+                                msg.edit(embedback, { buttons: [backwardsbuttonon, listabuttonon, forwardsbuttonon] })
 
                             }
+                        } else {
+
+                            if (b.id == "listabuton") {
+
+                                frame = 0;
+                                const embed = new MessageEmbed()
+                                    .setTitle(`Frames que usen ${bitsin1} bits:`)
+                                    .addFields(categories)
+                                    .setColor(`#84e3ca`);
+                                msg.edit(embed, { buttons: [backwardsbuttonoff, listabuttonoff, forwardsbuttonon] })
+
+                            }
+
                         }
-                    })
-                });
-            })
+                    }
+                })
+            });
 
         } else {
 
             let bitsin2 = datos[1].trim().toLowerCase()
 
-            db.all(`SELECT * FROM karutaframes WHERE ((bit1 = ? OR bit1 = ?) AND (bit2 = ? OR bit2 = ?))`, [bitsin1, bitsin2, bitsin1, bitsin2], async (err, filas) => {
-                if (err) return console.error(err.message)
-                if (!filas || !filas[0]) return message.channel.send('No hay frames que usen esos dos bits juntos.').then((msg) => {
-                    msg.delete({ timeout: 5000 })
-                })
+            const dosbit = await kfdb.find({
+                $or: [
+                    { $and: [{ bit1: `${bitsin1}` }, { bit2: `${bitsin2}` }] },
+                    { $and: [{ bit1: `${bitsin2}` }, { bit2: `${bitsin1}` }] }
+                ]
+            }).exec();
 
-                filas.forEach((doc) => {
-                    const name = doc.nombre;
-                    const bi1 = doc.bit1;
-                    const bi2 = doc.bit2;
-                    const imagen = doc.foto;
+            if (!dosbit || !dosbit[0]) return message.channel.send('No hay frames que usen esos dos bits juntos.').then((msg) => {
+                msg.delete({ timeout: 5000 })
+            })
 
-                    let data = new Object();
-                    let imgdata = new Object();
+            dosbit.forEach((doc) => {
+                const name = doc.nombre;
+                const bi1 = doc.bit1;
+                const bi2 = doc.bit2;
+                const imagen = doc.foto;
 
-                    data = {
-                        name: name,
-                        value: `2,500 ${bi1} bits | 2,500 ${bi2} bits`,
-                    };
+                let data = new Object();
+                let imgdata = new Object();
 
-                    imgdata = imagen;
+                data = {
+                    name: name,
+                    value: `2,500 ${bi1} bits | 2,500 ${bi2} bits`,
+                };
 
-                    categories.push(data);
-                    img.push(imgdata);
-                });
-                const embed = new MessageEmbed()
-                    .setTitle(`Frames que usen ${bitsin1} bits y ${bitsin2} bits:`)
-                    .addFields(categories)
-                    .setColor(`#84e3ca`);
+                imgdata = imagen;
 
-                let backwardsbuttonon = new MessageButton().setStyle("blurple").setID("backbuton").setLabel("◀️")
-                let backwardsbuttonoff = new MessageButton().setStyle("blurple").setID("backbutoff").setLabel("◀️").setDisabled()
-                let forwardsbuttonon = new MessageButton().setStyle("blurple").setID("forwbuton").setLabel("▶️")
-                let forwardsbuttonoff = new MessageButton().setStyle("blurple").setID("forwbutoff").setLabel("▶️").setDisabled()
-                let listabuttonon = new MessageButton().setStyle("blurple").setID("listabuton").setLabel("📋")
-                let listabuttonoff = new MessageButton().setStyle("blurple").setID("listabutoff").setLabel("📋").setDisabled()
+                categories.push(data);
+                img.push(imgdata);
+            });
+            const embed = new MessageEmbed()
+                .setTitle(`Frames que usen ${bitsin1} bits y ${bitsin2} bits:`)
+                .addFields(categories)
+                .setColor(`#84e3ca`);
 
-                return await message.channel.send(embed, { buttons: [backwardsbuttonoff, listabuttonoff, forwardsbuttonon] }).then(msg => {
+            let backwardsbuttonon = new MessageButton().setStyle("blurple").setID("backbuton").setLabel("◀️")
+            let backwardsbuttonoff = new MessageButton().setStyle("blurple").setID("backbutoff").setLabel("◀️").setDisabled()
+            let forwardsbuttonon = new MessageButton().setStyle("blurple").setID("forwbuton").setLabel("▶️")
+            let forwardsbuttonoff = new MessageButton().setStyle("blurple").setID("forwbutoff").setLabel("▶️").setDisabled()
+            let listabuttonon = new MessageButton().setStyle("blurple").setID("listabuton").setLabel("📋")
+            let listabuttonoff = new MessageButton().setStyle("blurple").setID("listabutoff").setLabel("📋").setDisabled()
 
-                    const collector = msg.createButtonCollector((button) => button.clicker.user.id === message.author.id, { time: 60000 });
+            return await message.channel.send(embed, { buttons: [backwardsbuttonoff, listabuttonoff, forwardsbuttonon] }).then((msg) => {
 
-                    let frame = 0;
+                const collector = msg.createButtonCollector((button) => button.clicker.user.id === message.author.id, { time: 60000 });
 
-                    collector.on("collect", (b) => {
-                        b.reply.defer();
+                let frame = 0;
 
-                        if (b.id == "forwbuton") {
-                            if (frame == filas.length - 1) {
+                collector.on("collect", (b) => {
+                    b.reply.defer();
 
-                                frame++;
-                                const embedforward = new MessageEmbed()
-                                    .setColor(`#84e3ca`)
-                                    .addFields(categories[frame - 1])
-                                    .setImage(img[frame - 1])
-                                    .setFooter(`Frame ${frame} de ${filas.length}`)
+                    if (b.id == "forwbuton") {
+                        if (frame == dosbit.length - 1) {
 
-                                msg.edit(embedforward, { buttons: [backwardsbuttonon, listabuttonon, forwardsbuttonoff] })
+                            frame++;
+                            const embedforward = new MessageEmbed()
+                                .setColor(`#84e3ca`)
+                                .addFields(categories[frame - 1])
+                                .setImage(img[frame - 1])
+                                .setFooter(`Frame ${frame} de ${dosbit.length}`)
 
-                            } else {
-
-                                frame++;
-                                const embedforward = new MessageEmbed()
-                                    .setColor(`#84e3ca`)
-                                    .addFields(categories[frame - 1])
-                                    .setImage(img[frame - 1])
-                                    .setFooter(`Frame ${frame} de ${filas.length}`)
-
-                                msg.edit(embedforward, { buttons: [backwardsbuttonon, listabuttonon, forwardsbuttonon] })
-                            }
+                            msg.edit(embedforward, { buttons: [backwardsbuttonon, listabuttonon, forwardsbuttonoff] })
 
                         } else {
 
-                            if (b.id == "backbuton") {
+                            frame++;
+                            const embedforward = new MessageEmbed()
+                                .setColor(`#84e3ca`)
+                                .addFields(categories[frame - 1])
+                                .setImage(img[frame - 1])
+                                .setFooter(`Frame ${frame} de ${dosbit.length}`)
 
-                                if (frame == 1) {
+                            msg.edit(embedforward, { buttons: [backwardsbuttonon, listabuttonon, forwardsbuttonon] })
+                        }
 
-                                    frame--;
-                                    const embedprincipal = new MessageEmbed()
-                                        .setTitle(`Frames que usen ${bitsin1} bits y ${bitsin2} bits:`)
-                                        .addFields(categories)
-                                        .setColor(`#84e3ca`);
+                    } else {
 
-                                    msg.edit(embedprincipal, { buttons: [backwardsbuttonoff, listabuttonoff, forwardsbuttonon] })
+                        if (b.id == "backbuton") {
 
-                                } else {
+                            if (frame == 1) {
 
-                                    frame--;
-                                    const embedback = new MessageEmbed()
-                                        .setColor(`#84e3ca`)
-                                        .addFields(categories[frame - 1])
-                                        .setImage(img[frame - 1])
-                                        .setFooter(`Frame ${frame} de ${filas.length}`)
-                                    msg.edit(embedback, { buttons: [backwardsbuttonon, listabuttonon, forwardsbuttonon] })
+                                frame--;
+                                const embedprincipal = new MessageEmbed()
+                                    .setTitle(`Frames que usen ${bitsin1} bits y ${bitsin2} bits:`)
+                                    .addFields(categories)
+                                    .setColor(`#84e3ca`);
 
-                                }
+                                msg.edit(embedprincipal, { buttons: [backwardsbuttonoff, listabuttonoff, forwardsbuttonon] })
+
                             } else {
 
-                                if (b.id == "listabuton") {
-
-                                    frame = 0;
-                                    const embed = new MessageEmbed()
-                                        .setTitle(`Frames que usen ${bitsin1} bits y ${bitsin2} bits:`)
-                                        .addFields(categories)
-                                        .setColor(`#84e3ca`);
-                                    msg.edit(embed, { buttons: [backwardsbuttonoff, listabuttonoff, forwardsbuttonon] })
-
-                                }
+                                frame--;
+                                const embedback = new MessageEmbed()
+                                    .setColor(`#84e3ca`)
+                                    .addFields(categories[frame - 1])
+                                    .setImage(img[frame - 1])
+                                    .setFooter(`Frame ${frame} de ${dosbit.length}`)
+                                msg.edit(embedback, { buttons: [backwardsbuttonon, listabuttonon, forwardsbuttonon] })
 
                             }
+                        } else {
+
+                            if (b.id == "listabuton") {
+
+                                frame = 0;
+                                const embed = new MessageEmbed()
+                                    .setTitle(`Frames que usen ${bitsin1} bits y ${bitsin2} bits:`)
+                                    .addFields(categories)
+                                    .setColor(`#84e3ca`);
+                                msg.edit(embed, { buttons: [backwardsbuttonoff, listabuttonoff, forwardsbuttonon] })
+
+                            }
+
                         }
-                    })
-                });
-            })
-        }
+                    }
+                })
+            });
+        };
+
     },
 };

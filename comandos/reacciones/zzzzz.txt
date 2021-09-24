@@ -4,7 +4,7 @@ module.exports = {
     name: '',
     description: 'Envía un gif ',
     aliases: ['', ''],
-    execute(client, message) {
+    execute(client, message, args, kfdb, acciondb) {
       message.delete();
       let gifs = ['', '', '', '', '', '', '', '']
       let usersend = message.member.user
