@@ -60,7 +60,7 @@ client.on("guildMemberAdd", (member) => {
     .addField("💬 Habla para subir de nivel!!", "Al subir de nivel desbloquearás ventajas exclusivas. Puedes ver tu nivel y las recompensas en el mensaje anclado en [Niveles](https://discord.com/channels/726133117722820671/741608890533412875).")
     .addField("🤖 Comandos de bots!!", "Puedes ver los comandos de los bots de AstroMunidad en [Info bots](https://discord.com/channels/726133117722820671/849765675891425301).");
   member.send(embed);
-  member.roles.add(["864656505541623849", "726143285545926736", "864650641167351818", "864649993453174805"]);
+  member.roles.add(["864656505541623849", "726143285545926736", "864650641167351818", "864649993453174805", "898862006852009985"]);
 });
 
 client.on('message', async message => {
