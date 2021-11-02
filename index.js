@@ -83,10 +83,8 @@ client.on('message', async message => {
   let wordskarutaview = ['kv', 'k!v'];
   let wordskarutawi = ['kwi', 'k!wi', 'kworkerinfo', 'k!workerinfo'];
   let wordskarutaviewdyes = ['kv $', 'k!v $', 'kv  $', 'k!v  $'];
-  let wordsiteminfo = ['kii', 'k!ii', 'kiteminfo', 'k!iteminfo'];
-  let dyechannels = ['815976854652715058', '815978239008833616', '815978326048112650', '815978402876096523', '815978511512502314', '815978638561640518', '815978751749390386', '815978956053413898', '815978913389871134', '816628785523851304', '815979234698199110', '821416773625577482', '815981553921818644'];
-  let cartaschannels = ['814594761049636895', '846743034867482644', '815931846340640768', '846743084724387850', '815931883882807368', '846743131764293652', '876885140809343017', '876885514345644102', '876885533199048704'];
-  let burnpricechannels = ['815932343759142962', '876916288214143087', '876916432200425533'];
+  let dyechannels = ['905031760113438750', '815981553921818644'];
+  let cartaschannels = ['905030925774110720'];
 
 
   //////     KARUTA     //////
@@ -267,43 +265,6 @@ client.on('message', async message => {
     return;
   }
 
-  //Mod burn-price
-  if ((burnpricechannels.some(channel => message.channel.id === channel)) && (message.author.id != '556249326951727115')) {
-    if (wordskarutaview.some(word => messageContent.startsWith(word))) {
-    } else {
-      if (
-        !messageContent.startsWith('k') &&
-        message.author.id != '646937666251915264'
-      ) {
-        message.delete();
-        message.channel
-          .send(
-            'En este canal solo se pueden usar los comandos ***`kb`***, ***`kburn`***.'
-          )
-          .then(msg => {
-            msg.delete({ timeout: 10000 });
-          });
-      } else {
-        if (messageContent.startsWith('k')) {
-          message.delete();
-          const filter = m => m.author.id == `646937666251915264` && m.content.includes(`command is restricted in this channel`);
-          message.channel
-            .awaitMessages(filter, { max: 1, time: 2000, errors: ['time'] })
-            .then(collected => collected.first().delete())
-            .catch(() => null);
-        } else {
-          if (
-            message.author.id == `646937666251915264` &&
-            messageContent.includes('that code is invalid')
-          ) {
-            message.delete({ timeout: 5000 });
-          }
-        }
-      }
-    }
-    return;
-  }
-
   //Reaccións recomendar música.
   if (message.channel.id == '726155485236953088') {
     if (message.content.includes('https://www.youtube.com/watch')) {
@@ -393,17 +354,7 @@ client.on('message', async message => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
+  
 
   if (!message.content.startsWith(prefix)) return;
 
