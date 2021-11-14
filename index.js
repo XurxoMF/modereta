@@ -265,6 +265,8 @@ client.on('message', async message => {
     return;
   }
 
+  //////     KARUTA     //////
+
   //Reaccións recomendar música.
   if (message.channel.id == '726155485236953088') {
     if (message.content.includes('https://www.youtube.com/watch')) {
@@ -290,16 +292,19 @@ client.on('message', async message => {
               .react('👎')
               .then(() => message.react('👍'))
               .catch(() => null);
+          } else {
+            if (message.content.includes('https://open.spotify.com/')) {
+              message
+              .react('👎')
+              .then(() => message.react('👍'))
+              .catch(() => null);
+            }
           }
         }
       }
     }
     return;
   }
-
-  //////     KARUTA     //////
-
-
 
 
   //////     MODS DYES     //////
