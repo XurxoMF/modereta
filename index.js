@@ -417,7 +417,7 @@ client.on('message', async message => {
       return message.reply(`Por favor, espera **\`${timeLeft.toFixed(1)}\`** segundos más antes de usar el comando \`${command.name}\` de nuevo.`);
     }
   }
-
+  
   timestamps.set(message.author.id, now);
   setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 
